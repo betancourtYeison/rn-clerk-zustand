@@ -5,7 +5,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import { Post } from "@/models/post";
 
-const BASE_URL = "https://jsonplaceholder.typicode.com"; // Replace with your API URL
+const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 interface PostsState {
   posts: Post[];
@@ -20,10 +20,8 @@ const usePostsStore = create(
 
       fetchPosts: async () => {
         try {
-          const response = await axios.get(`${BASE_URL}/posts`); // Fetching posts
-          const data = response.data;
-          console.log("🚀 ~ fetchPosts: ~ data:", data);
-          set({ posts: data });
+          const response = await axios.get(`${BASE_URL}/posts`);
+          set({ posts: response.data });
         } catch (error) {
           console.error("Failed to fetch posts:", error);
         }
@@ -35,7 +33,7 @@ const usePostsStore = create(
     }),
     {
       name: "posts-storage",
-      storage: createJSONStorage(() => AsyncStorage), // // You can switch between AsyncStorage or mmkvStorage
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );

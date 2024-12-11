@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import styled from "styled-components/native";
 
 interface PressableButtonProps {

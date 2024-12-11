@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import Toast from "react-native-root-toast";
 import LottieView from "lottie-react-native";
 import { useEffect } from "react";
+import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
@@ -13,7 +14,7 @@ import Text from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { ConfigToast } from "@/constants/ConfigToast";
 import usePostsStore from "@/store/usePostsStore";
-import { FlatList } from "react-native";
+import useUserStore from "@/store/useUserStore";
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -63,6 +64,7 @@ export default function Page() {
   const { user } = useUser();
 
   const { posts, fetchPosts, getPostsCount } = usePostsStore();
+  const { deleteItemAsync } = useUserStore();
 
   useEffect(() => {
     if (posts.length === 0) fetchPosts();
@@ -71,6 +73,7 @@ export default function Page() {
   const handleSignOut = async () => {
     try {
       await signOut();
+      deleteItemAsync();
       Linking.openURL(Linking.createURL("/"));
     } catch (err) {
       const error = err as Error;

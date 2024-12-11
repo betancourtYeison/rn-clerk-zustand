@@ -12,6 +12,7 @@ import PressableButton from "@/components/ui/PressableButton";
 import Text from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { ConfigToast } from "@/constants/ConfigToast";
+import useUserStore from "@/store/useUserStore";
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -34,8 +35,9 @@ const ContainerLottie = styled(LottieView)`
 const LottieSignin = require("@/assets/lottie/signin.json");
 
 export default function Page() {
-  const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const { setItemAsync } = useUserStore();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
@@ -55,6 +57,7 @@ export default function Page() {
       } else {
         Toast.show(signInAttempt.status || "Try again...", ConfigToast);
       }
+      await setItemAsync(signInAttempt.createdSessionId, signInAttempt.status);
     } catch (err) {
       const error = err as Error;
       Toast.show(error.message, ConfigToast);
