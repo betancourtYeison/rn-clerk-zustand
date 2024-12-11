@@ -13,6 +13,7 @@ import PressableButton from "@/components/ui/PressableButton";
 import Text from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { ConfigToast } from "@/constants/ConfigToast";
+import { Post } from "@/models/post";
 import usePostsStore from "@/store/usePostsStore";
 import useUserStore from "@/store/useUserStore";
 
@@ -43,7 +44,7 @@ const FloatViewContainer = styled.View`
   width: 100px;
 `;
 
-const PostViewContainer = styled.View`
+const PostTouchableOpacityContainer = styled.TouchableOpacity`
   flex-direction: column;
   justify-content: space-between;
   padding: 16px;
@@ -63,7 +64,13 @@ export default function Page() {
   const { signOut } = useClerk();
   const { user } = useUser();
 
-  const { posts, fetchPosts, getPostsCount } = usePostsStore();
+  const {
+    posts,
+    fetchPosts,
+    getPostsCount,
+    setPostSelected,
+    fetchCommentsByPost,
+  } = usePostsStore();
   const { deleteItemAsync } = useUserStore();
 
   useEffect(() => {
@@ -79,6 +86,11 @@ export default function Page() {
       const error = err as Error;
       Toast.show(error.message, ConfigToast);
     }
+  };
+
+  const handleCommentByPost = async (post: Post) => {
+    setPostSelected(post);
+    await fetchCommentsByPost(post.id);
   };
 
   return (
@@ -104,10 +116,12 @@ export default function Page() {
             data={posts}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item }) => (
-              <PostViewContainer>
+              <PostTouchableOpacityContainer
+                onPress={() => handleCommentByPost(item)}
+              >
                 <Text label={`Title: ${item.title}`} bold />
                 <Text label={`Body: ${item.body}`} />
-              </PostViewContainer>
+              </PostTouchableOpacityContainer>
             )}
           />
         </SignedInViewContainer>
