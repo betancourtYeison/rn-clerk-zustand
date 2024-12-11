@@ -1,64 +1,94 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Text, TextInput, Button, View } from "react-native";
-import React from "react";
+import LottieView from "lottie-react-native";
+import { useCallback, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import styled from "styled-components/native";
+
+import Input from "@/components/ui/Input";
+import Margin from "@/components/ui/Margin";
+import PressableButton from "@/components/ui/PressableButton";
+import Text from "@/components/ui/Text";
+import { Colors } from "@/constants/Colors";
+
+const SafeAreaContainer = styled(SafeAreaView)`
+  flex: 1;
+  background-color: ${Colors.light.background};
+  align-items: center;
+  padding-horizontal: 16px;
+`;
+
+const ViewContainer = styled.View`
+  width: 100%;
+  align-items: left;
+`;
+
+const ContainerLottie = styled(LottieView)`
+  width: 200px;
+  height: 200px;
+  backgroundcolor: ${Colors.light.background};
+`;
+
+const LottieSignin = require("@/assets/lottie/signin.json");
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
 
-  // Handle the submission of the sign-in form
-  const onSignInPress = React.useCallback(async () => {
+  const onSignInPress = useCallback(async () => {
     if (!isLoaded) return;
 
-    // Start the sign-in process using the email and password provided
     try {
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
         password,
       });
 
-      // If sign-in process is complete, set the created session as active
-      // and redirect the user
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/");
       } else {
-        // If the status isn't complete, check why. User might need to
-        // complete further steps.
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
     }
   }, [isLoaded, emailAddress, password]);
 
   return (
-    <View>
-      <TextInput
+    <SafeAreaContainer>
+      <ContainerLottie autoPlay source={LottieSignin} />
+      <Text label="Sign in" title />
+      <Margin top={20} />
+      <Input
         autoCapitalize="none"
         value={emailAddress}
         placeholder="Enter email"
         onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
       />
-      <TextInput
+      <Margin top={20} />
+      <Input
         value={password}
         placeholder="Enter password"
         secureTextEntry={true}
         onChangeText={(password) => setPassword(password)}
       />
-      <Button title="Sign in" onPress={onSignInPress} />
-      <View>
-        <Text>Don't have an account?</Text>
+      <Margin top={20} />
+      <PressableButton
+        onPress={onSignInPress}
+        title="Continue"
+        bgColor={Colors.light.tint}
+      />
+      <Margin top={40} />
+      <ViewContainer>
+        <Text label="Don't have an account?" />
         <Link href="/sign-up">
-          <Text>Sign up</Text>
+          <Text label="Sign up" />
         </Link>
-      </View>
-    </View>
+      </ViewContainer>
+    </SafeAreaContainer>
   );
 }
