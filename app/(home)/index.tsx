@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, useClerk, useUser } from "@clerk/clerk-expo";
 import * as Linking from "expo-linking";
 import { router } from "expo-router";
+import Toast from "react-native-root-toast";
 import LottieView from "lottie-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
@@ -9,6 +10,7 @@ import Margin from "@/components/ui/Margin";
 import PressableButton from "@/components/ui/PressableButton";
 import Text from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
+import { ConfigToast } from "@/constants/ConfigToast";
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -35,7 +37,8 @@ export default function Page() {
       await signOut();
       Linking.openURL(Linking.createURL("/"));
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      const error = err as Error;
+      Toast.show(error.message, ConfigToast);
     }
   };
 

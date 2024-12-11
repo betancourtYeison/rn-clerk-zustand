@@ -2,6 +2,7 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useCallback, useState } from "react";
+import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
@@ -10,6 +11,7 @@ import Margin from "@/components/ui/Margin";
 import PressableButton from "@/components/ui/PressableButton";
 import Text from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
+import { ConfigToast } from "@/constants/ConfigToast";
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -51,10 +53,11 @@ export default function Page() {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/");
       } else {
-        console.error(JSON.stringify(signInAttempt, null, 2));
+        Toast.show(signInAttempt.status || "Try again...", ConfigToast);
       }
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      const error = err as Error;
+      Toast.show(error.message, ConfigToast);
     }
   }, [isLoaded, emailAddress, password]);
 

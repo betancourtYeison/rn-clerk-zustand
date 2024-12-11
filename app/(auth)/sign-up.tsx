@@ -2,6 +2,7 @@ import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useState } from "react";
+import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
@@ -10,6 +11,7 @@ import Margin from "@/components/ui/Margin";
 import PressableButton from "@/components/ui/PressableButton";
 import Text from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
+import { ConfigToast } from "@/constants/ConfigToast";
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -48,7 +50,8 @@ export default function SignUpScreen() {
 
       setPendingVerification(true);
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      const error = err as Error;
+      Toast.show(error.message, ConfigToast);
     }
   };
 
@@ -64,10 +67,11 @@ export default function SignUpScreen() {
         await setActive({ session: signUpAttempt.createdSessionId });
         router.replace("/");
       } else {
-        console.error(JSON.stringify(signUpAttempt, null, 2));
+        Toast.show(signUpAttempt.status || "Try again...", ConfigToast);
       }
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      const error = err as Error;
+      Toast.show(error.message, ConfigToast);
     }
   };
 

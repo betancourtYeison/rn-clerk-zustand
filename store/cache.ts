@@ -1,6 +1,9 @@
+import { TokenCache } from "@clerk/clerk-expo/dist/cache";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
-import { TokenCache } from "@clerk/clerk-expo/dist/cache";
+import Toast from "react-native-root-toast";
+
+import { ConfigToast } from "@/constants/ConfigToast";
 
 const createTokenCache = (): TokenCache => {
   return {
@@ -13,8 +16,9 @@ const createTokenCache = (): TokenCache => {
           console.log("No values stored under key: " + key);
         }
         return item;
-      } catch (error) {
-        console.error("secure store get item error: ", error);
+      } catch (err) {
+        const error = err as Error;
+        Toast.show(error.message, ConfigToast);
         await SecureStore.deleteItemAsync(key);
         return null;
       }

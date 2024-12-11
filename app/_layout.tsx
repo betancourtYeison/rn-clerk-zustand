@@ -9,6 +9,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { RootSiblingParent } from "react-native-root-siblings";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -46,7 +47,9 @@ export default function RootLayout() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Slot />
+          <RootSiblingParent>
+            <Slot />
+          </RootSiblingParent>
           <StatusBar style="auto" />
         </ThemeProvider>
       </ClerkLoaded>
