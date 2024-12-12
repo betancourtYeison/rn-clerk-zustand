@@ -2,6 +2,7 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useCallback, useState } from "react";
+import { Keyboard } from "react-native";
 import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
@@ -44,6 +45,7 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSignInPress = useCallback(async () => {
+    Keyboard.dismiss();
     setIsLoading(true);
     if (!isLoaded) return;
 

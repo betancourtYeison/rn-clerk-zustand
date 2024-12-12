@@ -6,7 +6,7 @@ import usePostsStore from "@/store/usePostsStore";
 
 const FloatCounterViewContainer = styled.View`
   position: absolute;
-  bottom: 0px;
+  bottom: 10px;
   right: 0px;
   height: 40px;
   width: 40px;

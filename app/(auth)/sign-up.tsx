@@ -1,7 +1,8 @@
 import { useSignUp } from "@clerk/clerk-expo";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useState } from "react";
+import { Keyboard } from "react-native";
 import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
@@ -39,6 +40,7 @@ export default function SignUpScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSignUpPress = async () => {
+    Keyboard.dismiss();
     setIsLoading(true);
     if (!isLoaded) return;
 
@@ -60,6 +62,7 @@ export default function SignUpScreen() {
   };
 
   const onVerifyPress = async () => {
+    Keyboard.dismiss();
     setIsLoading(true);
     if (!isLoaded) return;
 
@@ -86,13 +89,19 @@ export default function SignUpScreen() {
     return (
       <SafeAreaContainer>
         <Loading isLoading={isLoading} />
-        <Text label="Verify your email" />
+        <Text label="Verify your email" title />
+        <Margin top={20} />
         <Input
           value={code}
           placeholder="Enter your verification code"
           onChangeText={(code) => setCode(code)}
         />
-        <PressableButton title="Verify" onPress={onVerifyPress} />
+        <Margin top={20} />
+        <PressableButton
+          title="Verify"
+          onPress={onVerifyPress}
+          bgColor={Colors.light.tint}
+        />
       </SafeAreaContainer>
     );
   }
