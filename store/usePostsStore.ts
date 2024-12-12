@@ -12,11 +12,12 @@ interface PostsState {
   postSelected: Post | null;
   comments: Comment[];
   counterDetailViews: number;
-  fetchPosts: () => void;
+  isLoading: boolean;
+  fetchPosts: () => Promise<void>;
   getPostsCount: () => number;
   clearPosts: () => void;
   setPostSelected: (postSelected: Post) => void;
-  fetchCommentsByPost: (postId: number) => void;
+  fetchCommentsByPost: (postId: number) => Promise<void>;
   getCommentsCount: () => number;
   clearComments: () => void;
   clearPostsStore: () => void;
@@ -33,12 +34,17 @@ const usePostsStore = create(
 
       counterDetailViews: 0,
 
+      isLoading: false,
+
       fetchPosts: async () => {
+        set({ isLoading: true });
         try {
           const response = await axios.get(`${BASE_URL}/posts`);
           set({ posts: response.data });
         } catch (error) {
           console.error("Failed to fetch posts:", error);
+        } finally {
+          set({ isLoading: false });
         }
       },
 
@@ -50,6 +56,7 @@ const usePostsStore = create(
         set({ postSelected, counterDetailViews: get().counterDetailViews + 1 }),
 
       fetchCommentsByPost: async (postId: number) => {
+        set({ isLoading: true });
         try {
           const response = await axios.get(
             `${BASE_URL}/posts/${postId}/comments`
@@ -57,6 +64,8 @@ const usePostsStore = create(
           set({ comments: response.data });
         } catch (error) {
           console.error("Failed to fetch comments:", error);
+        } finally {
+          set({ isLoading: false });
         }
       },
 

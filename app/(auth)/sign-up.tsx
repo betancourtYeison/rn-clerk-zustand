@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 import Input from "@/components/Input";
+import Loading from "@/components/Loading";
 import Margin from "@/components/Margin";
 import PressableButton from "@/components/PressableButton";
 import Text from "@/components/Text";
@@ -18,11 +19,6 @@ const SafeAreaContainer = styled(SafeAreaView)`
   background-color: ${Colors.light.background};
   align-items: center;
   padding-horizontal: 16px;
-`;
-
-const ViewContainer = styled.View`
-  width: 100%;
-  align-items: left;
 `;
 
 const ContainerLottie = styled(LottieView)`
@@ -40,8 +36,10 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState("");
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSignUpPress = async () => {
+    setIsLoading(true);
     if (!isLoaded) return;
 
     try {
@@ -56,10 +54,13 @@ export default function SignUpScreen() {
     } catch (err) {
       const error = err as Error;
       Toast.show(error.message, ConfigToast);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onVerifyPress = async () => {
+    setIsLoading(true);
     if (!isLoaded) return;
 
     try {
@@ -76,12 +77,15 @@ export default function SignUpScreen() {
     } catch (err) {
       const error = err as Error;
       Toast.show(error.message, ConfigToast);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   if (pendingVerification) {
     return (
       <SafeAreaContainer>
+        <Loading isLoading={isLoading} />
         <Text label="Verify your email" />
         <Input
           value={code}
@@ -95,6 +99,7 @@ export default function SignUpScreen() {
 
   return (
     <SafeAreaContainer>
+      <Loading isLoading={isLoading} />
       <ContainerLottie autoPlay source={LottieSignup} />
       <Text label="Sign up" title />
       <Margin top={20} />

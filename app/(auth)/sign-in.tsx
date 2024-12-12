@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 import Input from "@/components/Input";
+import Loading from "@/components/Loading";
 import Margin from "@/components/Margin";
 import PressableButton from "@/components/PressableButton";
 import Text from "@/components/Text";
@@ -40,8 +41,10 @@ export default function Page() {
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSignInPress = useCallback(async () => {
+    setIsLoading(true);
     if (!isLoaded) return;
 
     try {
@@ -60,11 +63,14 @@ export default function Page() {
     } catch (err) {
       const error = err as Error;
       Toast.show(error.message, ConfigToast);
+    } finally {
+      setIsLoading(false);
     }
   }, [isLoaded, emailAddress, password]);
 
   return (
     <SafeAreaContainer>
+      <Loading isLoading={isLoading} />
       <ContainerLottie autoPlay source={LottieSignin} />
       <Text label="Sign in" title />
       <Margin top={20} />

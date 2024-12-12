@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 import CounterButton from "@/components/CounterButton";
+import Loading from "@/components/Loading";
 import Margin from "@/components/Margin";
 import PressableButton from "@/components/PressableButton";
 import Text from "@/components/Text";
@@ -67,6 +68,7 @@ export default function Page() {
 
   const {
     posts,
+    isLoading,
     fetchPosts,
     getPostsCount,
     setPostSelected,
@@ -101,6 +103,7 @@ export default function Page() {
     <SafeAreaContainer>
       <SignedIn>
         <SignedInViewContainer>
+          <Loading isLoading={isLoading} />
           <TopViewContainer>
             <Text
               label={"Hello... \n" + user?.emailAddresses[0].emailAddress}
