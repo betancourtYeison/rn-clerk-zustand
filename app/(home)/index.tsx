@@ -91,6 +91,7 @@ export default function Page() {
   const handleCommentByPost = async (post: Post) => {
     setPostSelected(post);
     await fetchCommentsByPost(post.id);
+    router.navigate("/post-detail");
   };
 
   return (
@@ -111,14 +112,16 @@ export default function Page() {
             </FloatViewContainer>
           </TopViewContainer>
           <Margin top={20} />
-          <Text label={`Post List... (${getPostsCount()})`} />
+          <Text label={`Posts List... (${getPostsCount()})`} />
           <FlatList
             data={posts}
             keyExtractor={(_, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <PostTouchableOpacityContainer
                 onPress={() => handleCommentByPost(item)}
               >
+                <Text label={`ID: ${item.id}`} bold />
                 <Text label={`Title: ${item.title}`} bold />
                 <Text label={`Body: ${item.body}`} />
               </PostTouchableOpacityContainer>

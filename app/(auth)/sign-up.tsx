@@ -1,5 +1,5 @@
 import { useSignUp } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
+import { Link, router } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useState } from "react";
 import Toast from "react-native-root-toast";
@@ -20,6 +20,11 @@ const SafeAreaContainer = styled(SafeAreaView)`
   padding-horizontal: 16px;
 `;
 
+const ViewContainer = styled.View`
+  width: 100%;
+  align-items: left;
+`;
+
 const ContainerLottie = styled(LottieView)`
   width: 200px;
   height: 200px;
@@ -30,7 +35,6 @@ const LottieSignup = require("@/assets/lottie/signup.json");
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");

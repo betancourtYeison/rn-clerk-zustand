@@ -12,10 +12,11 @@ interface PostsState {
   postSelected: Post | null;
   comments: Comment[];
   fetchPosts: () => void;
-  getPostsCount: () => void;
+  getPostsCount: () => number;
   clearPosts: () => void;
   setPostSelected: (postSelected: Post) => void;
   fetchCommentsByPost: (postId: number) => void;
+  getCommentsCount: () => number;
   clearComments: () => void;
 }
 
@@ -53,6 +54,8 @@ const usePostsStore = create(
           console.error("Failed to fetch comments:", error);
         }
       },
+
+      getCommentsCount: () => get().comments.length,
 
       clearComments: () => set({ comments: [] }),
     }),

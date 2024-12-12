@@ -1,5 +1,5 @@
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
+import { Link, router } from "expo-router";
 import LottieView from "lottie-react-native";
 import { useCallback, useState } from "react";
 import Toast from "react-native-root-toast";
@@ -35,7 +35,6 @@ const ContainerLottie = styled(LottieView)`
 const LottieSignin = require("@/assets/lottie/signin.json");
 
 export default function Page() {
-  const router = useRouter();
   const { signIn, setActive, isLoaded } = useSignIn();
   const { setItemAsync } = useUserStore();
 
