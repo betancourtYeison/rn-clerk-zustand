@@ -11,6 +11,7 @@ interface PostsState {
   posts: Post[];
   postSelected: Post | null;
   comments: Comment[];
+  counterDetailViews: number;
   fetchPosts: () => void;
   getPostsCount: () => number;
   clearPosts: () => void;
@@ -18,6 +19,7 @@ interface PostsState {
   fetchCommentsByPost: (postId: number) => void;
   getCommentsCount: () => number;
   clearComments: () => void;
+  clearPostsStore: () => void;
 }
 
 const usePostsStore = create(
@@ -28,6 +30,8 @@ const usePostsStore = create(
       postSelected: null,
 
       comments: [],
+
+      counterDetailViews: 0,
 
       fetchPosts: async () => {
         try {
@@ -42,7 +46,8 @@ const usePostsStore = create(
 
       clearPosts: () => set({ posts: [] }),
 
-      setPostSelected: (postSelected: Post) => set({ postSelected }),
+      setPostSelected: (postSelected: Post) =>
+        set({ postSelected, counterDetailViews: get().counterDetailViews + 1 }),
 
       fetchCommentsByPost: async (postId: number) => {
         try {
@@ -58,6 +63,14 @@ const usePostsStore = create(
       getCommentsCount: () => get().comments.length,
 
       clearComments: () => set({ comments: [] }),
+
+      clearPostsStore: () =>
+        set({
+          posts: [],
+          postSelected: null,
+          comments: [],
+          counterDetailViews: 0,
+        }),
     }),
     {
       name: "posts-storage",

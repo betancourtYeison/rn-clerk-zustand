@@ -1,6 +1,7 @@
-import { Colors } from "@/constants/Colors";
 import { TextProps } from "react-native";
 import styled from "styled-components/native";
+
+import { Colors } from "@/constants/Colors";
 
 interface CustomTextProps {
   label: string;

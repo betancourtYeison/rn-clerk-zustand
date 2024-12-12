@@ -8,9 +8,10 @@ import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
-import Margin from "@/components/ui/Margin";
-import PressableButton from "@/components/ui/PressableButton";
-import Text from "@/components/ui/Text";
+import CounterButton from "@/components/CounterButton";
+import Margin from "@/components/Margin";
+import PressableButton from "@/components/PressableButton";
+import Text from "@/components/Text";
 import { Colors } from "@/constants/Colors";
 import { ConfigToast } from "@/constants/ConfigToast";
 import { Post } from "@/models/post";
@@ -70,6 +71,7 @@ export default function Page() {
     getPostsCount,
     setPostSelected,
     fetchCommentsByPost,
+    clearPostsStore,
   } = usePostsStore();
   const { deleteItemAsync } = useUserStore();
 
@@ -81,6 +83,7 @@ export default function Page() {
     try {
       await signOut();
       deleteItemAsync();
+      clearPostsStore();
       Linking.openURL(Linking.createURL("/"));
     } catch (err) {
       const error = err as Error;
@@ -127,6 +130,7 @@ export default function Page() {
               </PostTouchableOpacityContainer>
             )}
           />
+          <CounterButton />
         </SignedInViewContainer>
       </SignedIn>
       <SignedOut>

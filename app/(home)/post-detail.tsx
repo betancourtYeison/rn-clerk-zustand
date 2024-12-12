@@ -3,11 +3,12 @@ import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
-import Margin from "@/components/ui/Margin";
-import Text from "@/components/ui/Text";
+import CounterButton from "@/components/CounterButton";
+import Margin from "@/components/Margin";
+import PressableButton from "@/components/PressableButton";
+import Text from "@/components/Text";
 import { Colors } from "@/constants/Colors";
 import usePostsStore from "@/store/usePostsStore";
-import PressableButton from "@/components/ui/PressableButton";
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
@@ -74,6 +75,7 @@ export default function Page() {
             </PostViewContainer>
           )}
         />
+        <CounterButton />
       </ViewContainer>
     </SafeAreaContainer>
   );

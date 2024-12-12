@@ -1,5 +1,6 @@
-import { Colors } from "@/constants/Colors";
 import styled from "styled-components/native";
+
+import { Colors } from "@/constants/Colors";
 
 interface ButtonContainerProps {
   bgColor?: string;

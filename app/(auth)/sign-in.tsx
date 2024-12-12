@@ -6,10 +6,10 @@ import Toast from "react-native-root-toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
-import Input from "@/components/ui/Input";
-import Margin from "@/components/ui/Margin";
-import PressableButton from "@/components/ui/PressableButton";
-import Text from "@/components/ui/Text";
+import Input from "@/components/Input";
+import Margin from "@/components/Margin";
+import PressableButton from "@/components/PressableButton";
+import Text from "@/components/Text";
 import { Colors } from "@/constants/Colors";
 import { ConfigToast } from "@/constants/ConfigToast";
 import useUserStore from "@/store/useUserStore";
